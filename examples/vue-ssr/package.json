@@ -1,0 +1,43 @@
+{
+  "name": "vue-ssr-6",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development npm run devBuild",
+    "devServer": "cross-env NODE_ENV=development node nodeScript/index",
+    "devBuild": "cross-env VUE_NODE=node vue-cli-service build --no-clean --silent && npm run build:client",
+    "build": " npm run build:server  && npm run build:client ",
+    "build:client": "vue-cli-service build --no-clean --silent",
+    "build:server": "cross-env VUE_NODE=node vue-cli-service build --silent",
+    "start": " node bin/index",
+    "start:server": "cross-env NODE_ENV=production nodemon  nodeScript/index",
+    "pm2": " cross-env NODE_ENV=production pm2 start  nodeScript/index.js --watch"
+  },
+  "dependencies": {
+    "core-js": "^3.4.3",
+    "vue": "^2.6.10",
+    "vue-router": "^3.1.3",
+    "vuex": "^3.1.2",
+    "cross-env": "^5.2.0",
+    "mddir": "^1.1.1",
+    "npm": "^6.13.4"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.1.0",
+    "@vue/cli-plugin-router": "^4.1.0",
+    "@vue/cli-plugin-vuex": "^4.1.0",
+    "@vue/cli-service": "^4.1.0",
+    "vue-template-compiler": "^2.6.10",
+    "browser-sync": "^2.26.3",
+    "http-proxy-middleware": "^0.19.1",
+    "lodash.merge": "^4.6.1",
+    "npm-run-all": "^4.1.5",
+    "vue-server-renderer": "^2.5.22",
+    "vuex-router-sync": "^5.0.0",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
