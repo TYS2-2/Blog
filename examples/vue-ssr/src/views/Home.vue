@@ -30,15 +30,7 @@ export default {
       homeData: state => state.home.homeData
     })
   },
-  mounted() {
-    console.log('================== ', this.data)
-    //console.log('homeData ================== ', this.homeData)
-    console.log(111111111111)
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", "http://iop-test.essence.com.cn/iop-mgt/popup/list", true);
-      xhr.withCredentials = true; //支持跨域发送cookies
-      xhr.send();
-  },
+  mounted() {},
   destroyed(){
     this.$store.unregisterModule('home')
   }
