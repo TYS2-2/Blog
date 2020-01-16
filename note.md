@@ -1,6 +1,111 @@
 
+##### 2020-01-16
+### js继承方式有哪些：原型链继承、构造函数继承、组合继承、原型式继承、寄生组合继承
+#### 原型链继承
+```
+function Parent() {
+  this.nameArr = []
+  this.name = ''
+}
+Parent.prototype.getName = function() {
+  return {
+    nameArr: this.nameArr,
+    name: this.name
+  }
+}
+Parent.prototype.saveName = function(name) {
+  this.nameArr.push(name)
+  this.name = name
+}
+function Child() {
 
-##### 2019-01-14
+}
+Child.prototype = new Parnet()
+let child1 = new Child()
+child1.saveName('name1')
+child1.getName() // {nameArr: ['name1'], name: 'name1'}
+
+let child2 = new Child()
+child2.saveName('name2')
+child2.getName() // {nameArr: ['name1', 'name2'], name: 'name2'}   //nameArr 数据被缓存下来了
+
+```
+##### 将子方法的原型指向父方法，从而实现继承关系
+##### 缺点：当父方法内有引用类型的属性时，该属性会在子方法里面共享数据
+
+
+#### 构造继承（借用构造函数继承）
+```
+function Parent() {
+  this.nameArr = []
+}
+function Child() {
+  Parent.call(this)
+}
+
+let child1 = new Child()
+child1.nameArr.push('name1')//['name1']
+
+let child2 = new Child()
+child2.nameArr.push('name2')//['name2']
+```
+##### 在子方法内部通过cal改变Parent的this的指向，指向为当前实例出来的方法，从而实现继承的关系
+##### 优点：父方法内部即使存在引用类型的属性，也不会出现数据共享的现象
+##### 缺点：每次实例化的时候都会调用父方法
+
+#### 组合继承
+```
+function Parent(name) {
+  this.nameArr = []
+  this.name = name
+}
+Parent.prototype.getName = function() {
+  return {
+    nameArr: this.nameArr,
+    name: this.name
+  }
+}
+Parent.prototype.saveName = function(name) {
+  this.nameArr.push(name)
+}
+
+function Child(name, age) {
+  Parent.call(this, name)
+  this.age = age
+}
+
+Child.prototype = new Parent()//将Child的prototype指向父构造函数
+
+let child1 = new Child('name1', 10)
+child1.saveName('name1')
+child1.getName()//{nameArr: ['name1'], name: 'name1'}
+
+let child2 = new Child('name2', 20)
+child2.getName()//{nameArr: ['name2'], name: 'name2'}
+```
+##### 通过借用构造函数和调整prototype的指向两中方式，组合起来实现继承
+##### 这种方法集合了原型继承和构造继承的优点，但是在重新指向prototype和借用构造方法时会重复调用父构造方法
+#### 组合继承优化
+##### 优化的目的：减少父构造方法的调用，减少不必要的属性
+```
+function object(o) {
+  function F() {}
+  F.prototype = o;
+  return new F();
+}
+
+function prototype(child, parent) {
+  var prototype = object(parent.prototype);
+  prototype.constructor = child;
+  child.prototype = prototype;
+}
+
+prototype(Child, Parent);
+```
+##### 优点：只调用了一次 Parent 构造函数
+
+
+##### 2020-01-14
 ### vue中watch和computed的区别
 ##### watch：监听变量的变化，做出相应的逻辑处理，可以影响一个或多个变量，是一对多的关系
 ##### computed：多个变量通过逻辑处理计算得到一个新的变量，并且会见结果缓存，当依赖的变量更新时才更新结果，是多队一的关系
